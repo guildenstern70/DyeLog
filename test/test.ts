@@ -9,7 +9,7 @@
 import {
     assertEquals,
 } from "https://deno.land/std@0.78.0/testing/asserts.ts";
-import { DyeLog, LogLevel } from '../src/dyelog.ts';
+import { DyeLog, LogLevel } from '../src/mod.ts';
 
 Deno.test("Log Level", () => {
     const logger = new DyeLog({

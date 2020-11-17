@@ -4,7 +4,7 @@ A very simple (but colorful) log for Deno.
 
 #### Example
 
-    const logger = new DyeLog({
+    const logger = new Mod({
         timestamp: true,
         level: LogLevel.TRACE
     });

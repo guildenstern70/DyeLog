@@ -6,7 +6,7 @@
  * MIT License
  */
 
-import { DyeLog, LogLevel } from "./dyelog.ts";
+import { DyeLog, LogLevel } from "./mod.ts";
 
 const appName = "DenoLog";
 const appVersion = "0.1.0";
