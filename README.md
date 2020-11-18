@@ -1,12 +1,15 @@
 ## DenoLog
 
-A very simple (but colorful) log for Deno.
+A very simple (but colorful) logger for Deno.
 
 #### Deno X URL
 
-Find me at Deno.X https://deno.land/x/dyelog
+Find me at Deno.X 
+<https://deno.land/x/dyelog>
 
-#### Example
+#### Usage
+
+    import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.1/mod.ts";
 
     const logger = new Mod({
         timestamp: true,
