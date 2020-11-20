@@ -6,13 +6,14 @@
  * MIT License
  */
 
-import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.1/mod.ts";
+import { DyeLog, LogLevel } from "./mod.ts";
 
 const appName = "DyeLog";
-const appVersion = "0.1.1";
+const appVersion = "0.1.2";
 
 const logger = new DyeLog({
     timestamp: true,
+    printlevel: true,
     level: LogLevel.TRACE
 });
 logger.info("");
