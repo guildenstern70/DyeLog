@@ -14,6 +14,7 @@ import { DyeLog, LogLevel } from '../src/mod.ts';
 Deno.test("Log Level", () => {
     const logger = new DyeLog({
         timestamp: true,
+        printlevel: true,
         level: LogLevel.TRACE
     });
     assertEquals(logger.level, LogLevel.TRACE)
@@ -22,6 +23,7 @@ Deno.test("Log Level", () => {
 Deno.test("Timestamp", () => {
     const logger = new DyeLog({
         timestamp: true,
+        printlevel: true,
         level: LogLevel.TRACE
     });
     assertEquals(logger.timestamp, true)

@@ -34,8 +34,5 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-      - name: Cache Dependencies
-        run: deno cache deps.ts
-
       - name: Run Tests
         run: deno test -A --unstable
