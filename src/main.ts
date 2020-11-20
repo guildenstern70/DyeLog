@@ -8,7 +8,7 @@
 
 import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.1/mod.ts";
 
-const appName = "DenoLog";
+const appName = "DyeLog";
 const appVersion = "0.1.1";
 
 const logger = new DyeLog({
@@ -22,3 +22,7 @@ logger.info("This is info");
 logger.warn("This is warn");
 logger.debug("This is debug");
 logger.error("This is error");
+logger.info("");
+logger.info("");
+logger.info("");
+
