@@ -15,6 +15,7 @@ Find me at Deno.X
 
     const logger = new DyeLog({
         timestamp: true,
+        printlevel: true,
         level: LogLevel.TRACE
     });
     
