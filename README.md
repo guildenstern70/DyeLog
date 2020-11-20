@@ -13,7 +13,7 @@ Find me at Deno.X
 
     import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.1/mod.ts";
 
-    const logger = new Mod({
+    const logger = new DyeLog({
         timestamp: true,
         level: LogLevel.TRACE
     });
