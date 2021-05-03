@@ -2,11 +2,11 @@
  * DyeLog
  * Colorful Logger for DENO
  *
- * Copyright (c) 2020 Alessio Saltarin
+ * Copyright (c) 2020-21 Alessio Saltarin
  * MIT License
  */
 
-import { cyan, gray, red, yellow, blue } from "https://deno.land/std@0.78.0/fmt/colors.ts";
+import { blue, cyan, gray, red, yellow } from "https://deno.land/std@0.78.0/fmt/colors.ts";
 import { sprintf } from "https://deno.land/std@0.78.0/fmt/printf.ts";
 
 export enum LogLevel {
@@ -30,10 +30,10 @@ export class DyeLog {
     private _options: LogOptions;
 
     constructor(options: LogOptions = {
-                                            timestamp: true,
-                                            printlevel: true,
-                                            level: LogLevel.DEBUG
-        }) {
+        timestamp: true,
+        printlevel: true,
+        level: LogLevel.DEBUG
+    }) {
 
         this._options = options;
         this._format = "";
@@ -77,37 +77,78 @@ export class DyeLog {
     trace(...messages: string[]) {
         if (this._options.level <= LogLevel.TRACE) {
             this._addInfo(messages, "trace");
-            console.log(gray(sprintf(this._format, ...messages)));
+            try {
+                console.log(gray(sprintf(this._format, ...messages)));
+            } catch (err) {
+                console.log(gray(sprintf(this._format,
+                    messages[0],
+                    messages[1],
+                    messages[2].toString(),
+                )));
+            }
         }
     }
 
     debug(...messages: string[]) {
         if (this._options.level <= LogLevel.DEBUG) {
             this._addInfo(messages, "debug");
-            console.log(blue(sprintf(this._format, ...messages)));
+            try {
+                console.log(blue(sprintf(this._format, ...messages)));
+            } catch (err) {
+                console.log(blue(sprintf(this._format,
+                    messages[0],
+                    messages[1],
+                    messages[2].toString(),
+                )));
+            }
         }
     }
 
     info(...messages: string[]) {
         if (this._options.level <= LogLevel.INFO) {
             this._addInfo(messages, "info");
-            console.log(cyan(sprintf(this._format, ...messages)));
+            try {
+                console.log(cyan(sprintf(this._format, ...messages)));
+            } catch (err) {
+                console.log(cyan(sprintf(this._format,
+                    messages[0],
+                    messages[1],
+                    messages[2].toString(),
+                )));
+            }
         }
     }
 
     warn(...messages: string[]) {
         if (this._options.level <= LogLevel.WARN) {
             this._addInfo(messages, "warn");
-            console.log(yellow(sprintf(this._format, ...messages)));
+            try {
+                console.log(yellow(sprintf(this._format, ...messages)));
+            } catch (err) {
+                console.log(yellow(sprintf(this._format,
+                    messages[0],
+                    messages[1],
+                    messages[2].toString(),
+                )));
+            }
         }
     }
 
     error(...messages: string[]) {
         if (this._options.level <= LogLevel.ERROR) {
             this._addInfo(messages, "error");
-            console.log(red(sprintf(this._format, ...messages)));
+            try {
+                console.log(red(sprintf(this._format, ...messages)));
+            } catch (err) {
+                console.log(red(sprintf(this._format,
+                    messages[0],
+                    messages[1],
+                    messages[2].toString(),
+                )));
+            }
         }
     }
+
 
     private _addInfo(messages: string[], level: string) {
         if (this._options.printlevel) {
