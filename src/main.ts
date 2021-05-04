@@ -22,9 +22,8 @@ logger.trace("This is trace");
 logger.info("This is info");
 logger.warn("This is warn");
 logger.debug("This is debug");
-logger.error("This is error");
 try {
-    throw new Error('This is an exception');
+    throw new Error("This is an exception");
 }
 catch(e: any) {
     logger.error(e);

@@ -1,3 +1,4 @@
+/*global Deno */
 /**
  * DyeLog
  * Colorful Logger for DENO
@@ -9,7 +10,7 @@
 import {
     assertEquals,
 } from "https://deno.land/std@0.78.0/testing/asserts.ts";
-import { DyeLog, LogLevel } from '../src/mod.ts';
+import { DyeLog, LogLevel } from "../src/mod.ts";
 
 Deno.test("Log Level", () => {
     const logger = new DyeLog({
@@ -17,7 +18,7 @@ Deno.test("Log Level", () => {
         printlevel: true,
         level: LogLevel.TRACE
     });
-    assertEquals(logger.level, LogLevel.TRACE)
+    assertEquals(logger.level, LogLevel.TRACE);
 });
 
 Deno.test("Timestamp", () => {
@@ -26,7 +27,7 @@ Deno.test("Timestamp", () => {
         printlevel: true,
         level: LogLevel.TRACE
     });
-    assertEquals(logger.timestamp, true)
+    assertEquals(logger.timestamp, true);
 });
 
 Deno.test("Multiline", () => {
@@ -36,8 +37,8 @@ Deno.test("Multiline", () => {
         level: LogLevel.TRACE
     });
     const myObject = {
-        name: 'Elena',
-        surname: 'Zambrelli',
+        name: "Elena",
+        surname: "Zambrelli",
         age: 16
     };
     logger.info(JSON.stringify(myObject, null, 2));
@@ -50,7 +51,7 @@ Deno.test("Error", () => {
         level: LogLevel.INFO,
     });
     try {
-        throw new Error('This is an exception');
+        throw new Error("This is an exception");
     }
     catch(e: any) {
         logger.error(e);
