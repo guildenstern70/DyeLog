@@ -2,11 +2,11 @@
 
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=darkgreen)](https://deno.land/x/dyelog)\
 [![deno version](https://img.shields.io/badge/deno-^1.32-lightgrey?logo=deno)](https://github.com/denoland/deno)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/653aa45627de4913a7409b2d6bd9cc13)](https://www.codacy.com/gh/guildenstern70/DyeLog/dashboard?utm_source=github.com&utm_medium=referral&utm_content=guildenstern70/DyeLog&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/df72ddff948f42fb845f0723af219914)](https://app.codacy.com/gh/guildenstern70/DyeLog/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![continuous_integration](https://github.com/guildenstern70/dyelog/workflows/Deno/badge.svg)](https://github.com/guildenstern70/DyeLog/actions?query=workflow%3ADeno)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A very simple (but colorful) logger for Deno.
+A simple (but colorful) logger for Deno.
 
 #### DyeLog X URL
 
