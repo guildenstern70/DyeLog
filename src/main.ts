@@ -9,7 +9,7 @@
 import { DyeLog, LogLevel } from "./mod.ts";
 
 const appName = "DyeLog";
-const appVersion = "0.1.4";
+const appVersion = "0.1.5";
 
 const logger = new DyeLog({
   timestamp: true,
@@ -18,6 +18,7 @@ const logger = new DyeLog({
 });
 logger.info("");
 logger.info(`🦕 Welcome to ${appName} v${appVersion} 🦕`);
+logger.info("");
 logger.trace("This is trace");
 logger.info("This is info");
 logger.warn("This is warn");

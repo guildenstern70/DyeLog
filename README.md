@@ -14,7 +14,7 @@ Find me at Deno.X <https://deno.land/x/dyelog>
 
 #### Usage
 
-    import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.4/mod.ts";
+    import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.5/mod.ts";
 
     const logger = new DyeLog({
         timestamp: true,
@@ -27,3 +27,12 @@ Find me at Deno.X <https://deno.land/x/dyelog>
     logger.warn("This is warn");
     logger.debug("This is debug");
     logger.error("This is error");
+
+### Test locally
+
+    deno task start
+
+### Cache dependencies locally
+
+    deno cache src/main.ts
+

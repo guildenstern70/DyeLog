@@ -74,7 +74,7 @@ export class DyeLog {
       this._addInfo(messages, "trace");
       try {
         console.log(gray(sprintf(this._format, ...messages)));
-      } catch (err) {
+      } catch (_err) {
         console.log(
           gray(
             sprintf(
@@ -94,7 +94,7 @@ export class DyeLog {
       this._addInfo(messages, "debug");
       try {
         console.log(blue(sprintf(this._format, ...messages)));
-      } catch (err) {
+      } catch (_err) {
         console.log(
           blue(
             sprintf(
@@ -114,7 +114,7 @@ export class DyeLog {
       this._addInfo(messages, "info");
       try {
         console.log(cyan(sprintf(this._format, ...messages)));
-      } catch (err) {
+      } catch (_err) {
         console.log(
           cyan(
             sprintf(
@@ -134,7 +134,7 @@ export class DyeLog {
       this._addInfo(messages, "warn");
       try {
         console.log(yellow(sprintf(this._format, ...messages)));
-      } catch (err) {
+      } catch (_err) {
         console.log(
           yellow(
             sprintf(
@@ -154,7 +154,7 @@ export class DyeLog {
       this._addInfo(messages, "error");
       try {
         console.log(red(sprintf(this._format, ...messages)));
-      } catch (err) {
+      } catch (_err) {
         console.log(
           red(
             sprintf(
@@ -187,9 +187,9 @@ export class DyeLog {
     const date = ("0" + dateOb.getDate()).slice(-2);
     const month = ("0" + (dateOb.getMonth() + 1)).slice(-2);
     const year = dateOb.getFullYear();
-    const hours = dateOb.getHours();
-    const minutes = dateOb.getMinutes();
-    const seconds = dateOb.getSeconds();
+    const hours = ("0" + dateOb.getHours()).slice(-2);
+    const minutes = ("0" + dateOb.getMinutes()).slice(-2);
+    const seconds = ("0" + dateOb.getSeconds()).slice(-2);
     const msecs = ("00" + dateOb.getMilliseconds()).slice(-3);
     const dtString = year + "-" + month + "-" + date + " " + hours + ":" +
       minutes +
