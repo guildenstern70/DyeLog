@@ -13,7 +13,7 @@ Find me at Deno.X <https://deno.land/x/dyelog>
 
 #### Usage
 
-    import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v0.1.4/mod.ts";
+    import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v1.0.5/mod.ts";
 
     const logger = new DyeLog({
         timestamp: true,
