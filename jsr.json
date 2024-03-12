@@ -1,5 +1,5 @@
 {
   "name": "@littlelite/dyelog",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "exports": "./src/mod.ts"
 }

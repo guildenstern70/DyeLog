@@ -13,7 +13,7 @@ Find me at Deno.X <https://deno.land/x/dyelog>. DyeLog is also available in JSR:
 
 #### Usage
 
-    import { DyeLog, LogLevel } from "https://deno.land/x/dyelog@v1.0.5/mod.ts";
+    import { DyeLog, LogLevel } from "@littlelite/dyelog";
 
     const logger = new DyeLog({
         timestamp: true,
