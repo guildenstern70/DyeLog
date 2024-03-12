@@ -6,6 +6,27 @@
  * MIT License
  */
 
+/**
+ * @module
+ * DyeLog is simple - but colorful - logger for Deno.
+ *
+ * ```ts
+ * import { DyeLog, LogLevel } from "@littlelite/dyelog";
+ *
+ *
+ * const logger = new DyeLog({
+ *   timestamp: true,
+ *   printlevel: true,
+ *   level: LogLevel.TRACE,
+ * });
+ *
+ * logger.trace("This is trace");
+ * logger.info("This is info");
+ * logger.warn("This is warn");
+ * logger.debug("This is debug");
+ * ```
+ */
+
 import {
   blue,
   cyan,
