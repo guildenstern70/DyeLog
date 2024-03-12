@@ -1,0 +1,17 @@
+{
+  "name": "@littlelite/dyelog",
+  "version": "0.1.6",
+  "exports": "./src/mod.ts",
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    }
+  },
+  "tasks": {
+    "start": "deno run src/main.ts"
+  }
+}
