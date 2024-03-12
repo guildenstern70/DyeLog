@@ -31,6 +31,10 @@ Find me at Deno.X <https://deno.land/x/dyelog>
 
     deno task start
 
+-- or --
+
+    deno test
+
 ### Cache dependencies locally
 
     deno cache src/main.ts
