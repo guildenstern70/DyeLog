@@ -12,8 +12,8 @@ import {
   gray,
   red,
   yellow,
-} from "https://deno.land/std@0.219.0/fmt/colors.ts";
-import { sprintf } from "https://deno.land/std@0.219.0/fmt/printf.ts";
+} from "@std/fmt/colors";
+import { sprintf } from "@std/fmt/printf";
 
 export enum LogLevel {
   TRACE,

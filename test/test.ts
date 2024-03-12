@@ -7,7 +7,7 @@
  * MIT License
  */
 
-import { assertEquals } from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assertEquals } from "@std/assert";
 import { DyeLog, LogLevel } from "../src/mod.ts";
 
 Deno.test("Log Level", () => {
