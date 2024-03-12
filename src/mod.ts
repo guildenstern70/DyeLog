@@ -6,7 +6,14 @@
  * MIT License
  */
 
-import { blue, cyan, gray, red, sprintf, yellow } from "./deps.ts";
+import {
+  blue,
+  cyan,
+  gray,
+  red,
+  yellow,
+} from "https://deno.land/std@0.219.0/fmt/colors.ts";
+import { sprintf } from "https://deno.land/std@0.219.0/fmt/printf.ts";
 
 export enum LogLevel {
   TRACE,
