@@ -9,7 +9,7 @@ A simple (but colorful) logger for Deno.
 
 #### DyeLog X URL
 
-Find me at Deno.X <https://deno.land/x/dyelog>
+Find me at Deno.X <https://deno.land/x/dyelog>. DyeLog is also available in JSR: <https://jsr.io/@littlelite/dyelog>.
 
 #### Usage
 
@@ -27,15 +27,5 @@ Find me at Deno.X <https://deno.land/x/dyelog>
     logger.debug("This is debug");
     logger.error("This is error");
 
-### Test locally
 
-    deno task start
-
--- or --
-
-    deno test
-
-### Cache dependencies locally
-
-    deno cache src/main.ts
 

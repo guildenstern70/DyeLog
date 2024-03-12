@@ -36,6 +36,8 @@ import {
 } from "@std/fmt/colors";
 import { sprintf } from "@std/fmt/printf";
 
+
+/** LogLevel indicates the level of the log (trace, debug, info, warning and error). */
 export enum LogLevel {
   TRACE,
   DEBUG,
@@ -50,6 +52,18 @@ interface LogOptions {
   level: LogLevel;
 }
 
+/**
+ * DyeLog class for logging purposes. Must be initialized in this way:
+ *
+ * ```ts
+ * const logger = new DyeLog({
+ *   timestamp: true, // if you need a time stamp in the logger
+ *   printlevel: true, // if you the log level (TRACE, DEBUG, INFO, WARN, ERROR) in the logger
+ *   level: LogLevel.TRACE, // the level of the log
+ * });
+ * ```
+ *
+ * */
 export class DyeLog {
   private readonly _format: string;
   private _timestamp = true;
