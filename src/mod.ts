@@ -2,7 +2,7 @@
  * DyeLog
  * Colorful Logger for DENO
  *
- * Copyright (c) 2020-23 Alessio Saltarin
+ * Copyright (c) 2020-24 Alessio Saltarin
  * MIT License
  */
 
@@ -10,6 +10,7 @@
  * @module
  * DyeLog is simple - but colorful - logger for Deno.
  *
+ * @example
  * ```ts
  * import { DyeLog, LogLevel } from "@littlelite/dyelog";
  *

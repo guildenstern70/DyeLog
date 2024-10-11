@@ -1,14 +1,14 @@
 {
   "name": "@littlelite/dyelog",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "exports": "./src/mod.ts",
   "compilerOptions": {
     "allowJs": true,
     "strict": true
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@^0.219.1",
-    "@std/fmt": "jsr:@std/fmt@0.219.1"
+    "@std/assert": "jsr:@std/assert@^1.0.6",
+    "@std/fmt": "jsr:@std/fmt@1.0.2"
   },
   "lint": {
     "rules": {
