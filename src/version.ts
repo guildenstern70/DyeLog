@@ -10,4 +10,3 @@ import denoConfig from "../deno.json" with { type: "json" };
 
 /** Shared demo/build version sourced from deno.json. */
 export const appVersion = denoConfig.version;
-

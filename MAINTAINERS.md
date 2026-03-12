@@ -53,11 +53,15 @@ deno publish --dry-run --allow-dirty
 
 ## 5) Publish to JSR
 
-The JSR publish process is triggerd by GitHub Actions 
-when you push a tag that matches the `version` field in `jsr.json`. To publish:
+The JSR publish process is triggerd by GitHub Actions when you push a tag that
+matches the `version` field in `jsr.json`. To publish:
 
 1. Bump version in `jsr.json` and `deno.json` (keep aligned).
-2. Push a tag that matches the new version, e.g. `git tag v0.2.1 && git push origin v0.2.1`.
-3. GitHub Actions will run the publish workflow, which includes a `deno publish --dry-run` step for validation. If that step fails, fix any issues and push a new tag to trigger another publish attempt.
-4. Once the workflow completes successfully, the new version will be published to JSR. You can verify the release on the JSR website and update any user-facing docs if needed.
-
+2. Push a tag that matches the new version, e.g.
+   `git tag v0.2.1 && git push origin v0.2.1`.
+3. GitHub Actions will run the publish workflow, which includes a
+   `deno publish --dry-run` step for validation. If that step fails, fix any
+   issues and push a new tag to trigger another publish attempt.
+4. Once the workflow completes successfully, the new version will be published
+   to JSR. You can verify the release on the JSR website and update any
+   user-facing docs if needed.
