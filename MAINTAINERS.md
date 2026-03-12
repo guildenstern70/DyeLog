@@ -59,9 +59,8 @@ matches the `version` field in `jsr.json`. To publish:
 1. Bump version in `jsr.json` and `deno.json` (keep aligned).
 2. Push a tag that matches the new version, e.g.
    `git tag v0.2.1 && git push origin v0.2.1`.
-3. GitHub Actions will run the publish workflow, which includes a
-   `deno publish --dry-run` step for validation. If that step fails, fix any
-   issues and push a new tag to trigger another publish attempt.
+3. Publish a new release on GitHub with the same tag, e.g. `v0.2.1`. This step is required to
+   trigger the GitHub Actions workflow for publishing to JSR.
 4. Once the workflow completes successfully, the new version will be published
    to JSR. You can verify the release on the JSR website and update any
    user-facing docs if needed.
