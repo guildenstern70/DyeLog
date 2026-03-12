@@ -74,7 +74,8 @@
 - When changing log output shape, update examples in `README.md`, the demo in
   `src/main.ts`, and any assumptions in `test/test.ts` together.
 - If you change the package version, update all duplicated version strings:
-  `deno.json`, `jsr.json`, and `src/main.ts` (`appVersion`).
+  `deno.json` and `jsr.json`. Demo version is sourced from `deno.json` via
+  `src/version.ts`.
 - Keep examples aligned with the real constructor shape:
   - `new DyeLog({ timestamp: true, printlevel: true, level: LogLevel.TRACE })`
 - Prefer small changes inside `src/mod.ts`; there are no service boundaries or
