@@ -2,14 +2,14 @@
  * DyeLog
  * Colorful Logger for DENO
  *
- * Copyright (c) 2020-24 Alessio Saltarin
+ * Copyright (c) 2020-26 Alessio Saltarin
  * MIT License
  */
 
 import { DyeLog, LogLevel } from "./mod.ts";
 
 const appName = "DyeLog";
-const appVersion = "0.1.9";
+const appVersion = "0.2.0";
 
 const logger = new DyeLog({
   timestamp: true,

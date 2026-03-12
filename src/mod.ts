@@ -2,18 +2,17 @@
  * DyeLog
  * Colorful Logger for DENO
  *
- * Copyright (c) 2020-24 Alessio Saltarin
+ * Copyright (c) 2020-26 Alessio Saltarin
  * MIT License
  */
 
 /**
  * @module
- * DyeLog is simple - but colorful - logger for Deno.
+ * DyeLog is a simple - but colorful - logger for Deno.
  *
  * @example
  * ```ts
- * import { DyeLog, LogLevel } from "@littlelite/dyelog";
- *
+ * import { DyeLog, LogLevel } from "jsr:@littlelite/dyelog";
  *
  * const logger = new DyeLog({
  *   timestamp: true,
@@ -28,15 +27,8 @@
  * ```
  */
 
-import {
-  blue,
-  cyan,
-  gray,
-  red,
-  yellow,
-} from "@std/fmt/colors";
+import { blue, cyan, gray, red, yellow } from "@std/fmt/colors";
 import { sprintf } from "@std/fmt/printf";
-
 
 /** LogLevel indicates the level of the log (trace, debug, info, warning and error). */
 export enum LogLevel {
@@ -63,19 +55,19 @@ interface LogOptions {
  *   level: LogLevel.TRACE, // the level of the log
  * });
  * ```
- *
- * */
+ */
 export class DyeLog {
   private readonly _format: string;
-  private _timestamp = true;
-  private _options: LogOptions;
+  private readonly _options: LogOptions;
 
   constructor(options: LogOptions = {
     timestamp: true,
     printlevel: true,
     level: LogLevel.DEBUG,
   }) {
-    this._options = options;
+    // Keep an internal snapshot so external mutation of the input object
+    // cannot alter logger behavior after construction.
+    this._options = { ...options };
     this._format = "";
     let printSeparator = false;
 
@@ -97,119 +89,88 @@ export class DyeLog {
   }
 
   get timestamp(): boolean {
-    return this._timestamp;
-  }
-
-  set timestamp(_ts: boolean) {
-    this._timestamp = _ts;
+    return this._options.timestamp;
   }
 
   get level(): LogLevel {
     return this._options.level;
   }
 
-  set level(_l: LogLevel) {
-    this._options.level = _l;
+  isEnabled(level: LogLevel): boolean {
+    return this._options.level <= level;
   }
 
-  trace(...messages: string[]) {
-    if (this._options.level <= LogLevel.TRACE) {
-      this._addInfo(messages, "trace");
-      try {
-        console.log(gray(sprintf(this._format, ...messages)));
-      } catch (_err) {
-        console.log(
-          gray(
-            sprintf(
-              this._format,
-              messages[0],
-              messages[1],
-              messages[2].toString(),
-            ),
-          ),
-        );
-      }
+  trace(...messages: unknown[]) {
+    this._log(LogLevel.TRACE, "trace", gray, messages);
+  }
+
+  traceLazy(messageFactory: () => unknown) {
+    this._logLazy(LogLevel.TRACE, "trace", gray, messageFactory);
+  }
+
+  debug(...messages: unknown[]) {
+    this._log(LogLevel.DEBUG, "debug", blue, messages);
+  }
+
+  debugLazy(messageFactory: () => unknown) {
+    this._logLazy(LogLevel.DEBUG, "debug", blue, messageFactory);
+  }
+
+  info(...messages: unknown[]) {
+    this._log(LogLevel.INFO, "info", cyan, messages);
+  }
+
+  infoLazy(messageFactory: () => unknown) {
+    this._logLazy(LogLevel.INFO, "info", cyan, messageFactory);
+  }
+
+  warn(...messages: unknown[]) {
+    this._log(LogLevel.WARN, "warn", yellow, messages);
+  }
+
+  warnLazy(messageFactory: () => unknown) {
+    this._logLazy(LogLevel.WARN, "warn", yellow, messageFactory);
+  }
+
+  error(...messages: unknown[]) {
+    this._log(LogLevel.ERROR, "error", red, messages);
+  }
+
+  errorLazy(messageFactory: () => unknown) {
+    this._logLazy(LogLevel.ERROR, "error", red, messageFactory);
+  }
+
+  private _log(
+    level: LogLevel,
+    levelLabel: string,
+    colorize: (message: string) => string,
+    messages: unknown[],
+  ) {
+    if (this.isEnabled(level)) {
+      const normalizedMessages = this._normalizeMessages(messages, levelLabel);
+      console.log(colorize(sprintf(this._format, ...normalizedMessages)));
     }
   }
 
-  debug(...messages: string[]) {
-    if (this._options.level <= LogLevel.DEBUG) {
-      this._addInfo(messages, "debug");
-      try {
-        console.log(blue(sprintf(this._format, ...messages)));
-      } catch (_err) {
-        console.log(
-          blue(
-            sprintf(
-              this._format,
-              messages[0],
-              messages[1],
-              messages[2].toString(),
-            ),
-          ),
-        );
-      }
+  private _logLazy(
+    level: LogLevel,
+    levelLabel: string,
+    colorize: (message: string) => string,
+    messageFactory: () => unknown,
+  ) {
+    if (this.isEnabled(level)) {
+      this._log(level, levelLabel, colorize, [messageFactory()]);
     }
   }
 
-  info(...messages: string[]) {
-    if (this._options.level <= LogLevel.INFO) {
-      this._addInfo(messages, "info");
-      try {
-        console.log(cyan(sprintf(this._format, ...messages)));
-      } catch (_err) {
-        console.log(
-          cyan(
-            sprintf(
-              this._format,
-              messages[0],
-              messages[1],
-              messages[2].toString(),
-            ),
-          ),
-        );
-      }
-    }
+  private _normalizeMessages(messages: unknown[], level: string): string[] {
+    const normalizedMessages = [DyeLog._safeString(messages[0])];
+    this._addInfo(normalizedMessages, level);
+    return normalizedMessages;
   }
 
-  warn(...messages: string[]) {
-    if (this._options.level <= LogLevel.WARN) {
-      this._addInfo(messages, "warn");
-      try {
-        console.log(yellow(sprintf(this._format, ...messages)));
-      } catch (_err) {
-        console.log(
-          yellow(
-            sprintf(
-              this._format,
-              messages[0],
-              messages[1],
-              messages[2].toString(),
-            ),
-          ),
-        );
-      }
-    }
-  }
-
-  error(...messages: string[]) {
-    if (this._options.level <= LogLevel.ERROR) {
-      this._addInfo(messages, "error");
-      try {
-        console.log(red(sprintf(this._format, ...messages)));
-      } catch (_err) {
-        console.log(
-          red(
-            sprintf(
-              this._format,
-              messages[0],
-              messages[1],
-              messages[2].toString(),
-            ),
-          ),
-        );
-      }
-    }
+  private static _safeString(value: unknown): string {
+    return String(value ?? "");
   }
 
   private _addInfo(messages: string[], level: string) {

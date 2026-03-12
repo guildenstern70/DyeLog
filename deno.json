@@ -1,14 +1,13 @@
 {
   "name": "@littlelite/dyelog",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "exports": "./src/mod.ts",
   "compilerOptions": {
-    "allowJs": true,
     "strict": true
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.6",
-    "@std/fmt": "jsr:@std/fmt@1.0.2"
+    "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/fmt": "jsr:@std/fmt@^1.0.9"
   },
   "lint": {
     "rules": {
@@ -16,6 +15,7 @@
     }
   },
   "tasks": {
-    "start": "deno run src/main.ts"
+    "start": "deno run src/main.ts",
+    "test": "deno test"
   }
 }
