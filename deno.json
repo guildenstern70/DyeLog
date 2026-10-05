@@ -1,7 +1,15 @@
 {
   "name": "@littlelite/dyelog",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "exports": "./src/mod.ts",
+  "publish": {
+    "include": [
+      "LICENSE",
+      "README.md",
+      "CHANGELOG.md",
+      "src/mod.ts"
+    ]
+  },
   "compilerOptions": {
     "strict": true
   },
@@ -16,6 +24,7 @@
   },
   "tasks": {
     "start": "deno run src/main.ts",
-    "test": "deno test"
+    "test": "deno test",
+    "format": "deno fmt"
   }
 }

@@ -16,6 +16,7 @@ const logger = new DyeLog({
   printlevel: true,
   level: LogLevel.TRACE,
 });
+
 logger.info("");
 logger.info(`🦕 Welcome to ${appName} v${appVersion} 🦕`);
 logger.info("");
@@ -23,6 +24,7 @@ logger.trace("This is trace");
 logger.info("This is info");
 logger.warn("This is warn");
 logger.debug("This is debug");
+
 try {
   throw new Error("This is an exception");
 } catch (e: any) {

@@ -28,7 +28,6 @@
  */
 
 import { blue, cyan, gray, red, yellow } from "@std/fmt/colors";
-import { sprintf } from "@std/fmt/printf";
 
 /** LogLevel indicates the level of the log (trace, debug, info, warning and error). */
 export enum LogLevel {
@@ -39,11 +38,31 @@ export enum LogLevel {
   ERROR,
 }
 
-interface LogOptions {
-  timestamp: boolean;
-  printlevel: boolean;
-  level: LogLevel;
+/** Options for configuring a {@linkcode DyeLog} instance. */
+export interface LogOptions {
+  /** Whether to prepend timestamps to log messages. Defaults to `true`. */
+  timestamp?: boolean;
+  /** Whether to prepend the log level label to log messages. Defaults to `true`. */
+  printlevel?: boolean;
+  /** The minimum log level to output. Defaults to {@linkcode LogLevel.DEBUG}. */
+  level?: LogLevel;
 }
+
+const DEFAULT_OPTIONS: Required<LogOptions> = {
+  timestamp: true,
+  printlevel: true,
+  level: LogLevel.DEBUG,
+};
+
+const LEVEL_TAGS: Record<LogLevel, string> = {
+  [LogLevel.TRACE]: gray("|TRACE|"),
+  [LogLevel.DEBUG]: gray("|DEBUG|"),
+  [LogLevel.INFO]: gray("|INFO |"),
+  [LogLevel.WARN]: gray("|WARN |"),
+  [LogLevel.ERROR]: gray("|ERROR|"),
+};
+
+const SEPARATOR = gray("> ");
 
 /**
  * DyeLog class for logging purposes. Must be initialized in this way:
@@ -51,45 +70,28 @@ interface LogOptions {
  * ```ts
  * const logger = new DyeLog({
  *   timestamp: true, // if you need a time stamp in the logger
- *   printlevel: true, // if you the log level (TRACE, DEBUG, INFO, WARN, ERROR) in the logger
+ *   printlevel: true, // if you need the log level (TRACE, DEBUG, INFO, WARN, ERROR) in the logger
  *   level: LogLevel.TRACE, // the level of the log
  * });
  * ```
  */
 export class DyeLog {
-  private readonly _format: string;
-  private readonly _options: LogOptions;
+  private readonly _hasPrefix: boolean;
+  private readonly _options: Required<LogOptions>;
 
-  constructor(options: LogOptions = {
-    timestamp: true,
-    printlevel: true,
-    level: LogLevel.DEBUG,
-  }) {
+  constructor(options: LogOptions = {}) {
     // Keep an internal snapshot so external mutation of the input object
     // cannot alter logger behavior after construction.
-    this._options = { ...options };
-    this._format = "";
-    let printSeparator = false;
-
-    if (options.printlevel) {
-      this._format = "%s" + this._format;
-      printSeparator = true;
-    }
-
-    if (options.timestamp) {
-      this._format = "%s" + this._format;
-      printSeparator = true;
-    }
-
-    if (printSeparator) {
-      this._format = this._format + gray("> ") + "%s";
-    } else {
-      this._format = "%s";
-    }
+    this._options = { ...DEFAULT_OPTIONS, ...options };
+    this._hasPrefix = this._options.timestamp || this._options.printlevel;
   }
 
   get timestamp(): boolean {
     return this._options.timestamp;
+  }
+
+  get printlevel(): boolean {
+    return this._options.printlevel;
   }
 
   get level(): LogLevel {
@@ -101,89 +103,87 @@ export class DyeLog {
   }
 
   trace(...messages: unknown[]) {
-    this._log(LogLevel.TRACE, "trace", gray, messages);
+    this._log(LogLevel.TRACE, gray, messages);
   }
 
   traceLazy(messageFactory: () => unknown) {
-    this._logLazy(LogLevel.TRACE, "trace", gray, messageFactory);
+    this._logLazy(LogLevel.TRACE, gray, messageFactory);
   }
 
   debug(...messages: unknown[]) {
-    this._log(LogLevel.DEBUG, "debug", blue, messages);
+    this._log(LogLevel.DEBUG, blue, messages);
   }
 
   debugLazy(messageFactory: () => unknown) {
-    this._logLazy(LogLevel.DEBUG, "debug", blue, messageFactory);
+    this._logLazy(LogLevel.DEBUG, blue, messageFactory);
   }
 
   info(...messages: unknown[]) {
-    this._log(LogLevel.INFO, "info", cyan, messages);
+    this._log(LogLevel.INFO, cyan, messages);
   }
 
   infoLazy(messageFactory: () => unknown) {
-    this._logLazy(LogLevel.INFO, "info", cyan, messageFactory);
+    this._logLazy(LogLevel.INFO, cyan, messageFactory);
   }
 
   warn(...messages: unknown[]) {
-    this._log(LogLevel.WARN, "warn", yellow, messages);
+    this._log(LogLevel.WARN, yellow, messages);
   }
 
   warnLazy(messageFactory: () => unknown) {
-    this._logLazy(LogLevel.WARN, "warn", yellow, messageFactory);
+    this._logLazy(LogLevel.WARN, yellow, messageFactory);
   }
 
   error(...messages: unknown[]) {
-    this._log(LogLevel.ERROR, "error", red, messages);
+    this._log(LogLevel.ERROR, red, messages);
   }
 
   errorLazy(messageFactory: () => unknown) {
-    this._logLazy(LogLevel.ERROR, "error", red, messageFactory);
+    this._logLazy(LogLevel.ERROR, red, messageFactory);
   }
 
   private _log(
     level: LogLevel,
-    levelLabel: string,
     colorize: (message: string) => string,
     messages: unknown[],
   ) {
     if (this.isEnabled(level)) {
-      const normalizedMessages = this._normalizeMessages(messages, levelLabel);
-      console.log(colorize(sprintf(this._format, ...normalizedMessages)));
+      console.log(colorize(this._formatLine(level, messages)));
     }
   }
 
   private _logLazy(
     level: LogLevel,
-    levelLabel: string,
     colorize: (message: string) => string,
     messageFactory: () => unknown,
   ) {
     if (this.isEnabled(level)) {
-      this._log(level, levelLabel, colorize, [messageFactory()]);
+      this._log(level, colorize, [messageFactory()]);
     }
   }
 
-  private _normalizeMessages(messages: unknown[], level: string): string[] {
-    const normalizedMessages = [DyeLog._safeString(messages[0])];
-    this._addInfo(normalizedMessages, level);
-    return normalizedMessages;
+  private _formatLine(level: LogLevel, messages: unknown[]): string {
+    let prefix = "";
+    if (this._options.timestamp) {
+      prefix += DyeLog._getDateTime();
+    }
+    if (this._options.printlevel) {
+      prefix += LEVEL_TAGS[level];
+    }
+    if (this._hasPrefix) {
+      prefix += SEPARATOR;
+    }
+    const messageBody = messages.length === 0
+      ? ""
+      : messages.map((message) => DyeLog._safeString(message)).join(" ");
+    return `${prefix}${messageBody}`;
   }
 
   private static _safeString(value: unknown): string {
+    if (value instanceof Error) {
+      return value.stack ?? String(value);
+    }
     return String(value ?? "");
-  }
-
-  private _addInfo(messages: string[], level: string) {
-    if (this._options.printlevel) {
-      messages.unshift(DyeLog._getPrintLevel(level.toUpperCase()));
-    }
-    if (this._options.timestamp) {
-      messages.unshift(DyeLog._getDateTime());
-    }
-  }
-
-  private static _getPrintLevel(loglevel: string): string {
-    return gray("|" + loglevel.padEnd(5, " ") + "|");
   }
 
   private static _getDateTime(): string {

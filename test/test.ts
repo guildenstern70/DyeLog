@@ -9,7 +9,7 @@
 
 import { assertEquals, assertMatch, assertStringIncludes } from "@std/assert";
 import { stripAnsiCode } from "@std/fmt/colors";
-import { DyeLog, LogLevel } from "../src/mod.ts";
+import { DyeLog, LogLevel, type LogOptions } from "../src/mod.ts";
 
 const TIMESTAMP_PREFIX = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}/;
 
@@ -222,7 +222,7 @@ Deno.test("JavaScript objects can be logged directly and as formatted JSON", () 
   assertStringIncludes(output[1], '"age": 16');
 });
 
-Deno.test("Error objects are logged with their string representation", () => {
+Deno.test("Error objects are logged with their stack trace", () => {
   const logger = new DyeLog({
     timestamp: false,
     printlevel: false,
@@ -237,5 +237,84 @@ Deno.test("Error objects are logged with their string representation", () => {
     }
   });
 
-  assertEquals(output, ["Error: This is an exception"]);
+  assertEquals(output.length, 1);
+  assertStringIncludes(output[0], "Error: This is an exception");
+  assertMatch(output[0], /\s+at /);
+});
+
+Deno.test("Error objects fall back to string representation when stack is missing", () => {
+  const logger = new DyeLog({
+    timestamp: false,
+    printlevel: false,
+    level: LogLevel.INFO,
+  });
+  const err = new Error("No stack error");
+  err.stack = undefined;
+
+  const output = captureLogs(() => {
+    logger.error(err);
+  });
+
+  assertEquals(output, ["Error: No stack error"]);
+});
+
+Deno.test("Multiple arguments are formatted and joined with spaces", () => {
+  const logger = new DyeLog({
+    timestamp: false,
+    printlevel: false,
+    level: LogLevel.INFO,
+  });
+
+  const output = captureLogs(() => {
+    logger.info("Server", "started", "on", "port", 8080);
+    logger.warn("Status:", 404, "Not Found");
+    logger.error("Failed:", false);
+  });
+
+  assertEquals(output, [
+    "Server started on port 8080",
+    "Status: 404 Not Found",
+    "Failed: false",
+  ]);
+});
+
+Deno.test("Multiple arguments preserve timestamp and printlevel metadata", () => {
+  const logger = new DyeLog({
+    timestamp: true,
+    printlevel: true,
+    level: LogLevel.INFO,
+  });
+
+  const output = captureLogs(() => {
+    logger.info("Listening on", "localhost:3000");
+  });
+
+  assertEquals(output.length, 1);
+  assertMatch(output[0], TIMESTAMP_PREFIX);
+  assertStringIncludes(output[0], "INFO");
+  assertEquals(output[0].endsWith("> Listening on localhost:3000"), true);
+});
+
+Deno.test("Constructor defaults apply when called with no arguments", () => {
+  const logger = new DyeLog();
+  assertEquals(logger.timestamp, true);
+  assertEquals(logger.printlevel, true);
+  assertEquals(logger.level, LogLevel.DEBUG);
+});
+
+Deno.test("Partial LogOptions merge cleanly with defaults", () => {
+  const options: LogOptions = { level: LogLevel.WARN };
+  const logger = new DyeLog(options);
+
+  assertEquals(logger.timestamp, true);
+  assertEquals(logger.printlevel, true);
+  assertEquals(logger.level, LogLevel.WARN);
+});
+
+Deno.test("Partial LogOptions allow overriding individual boolean flags", () => {
+  const logger = new DyeLog({ timestamp: false });
+
+  assertEquals(logger.timestamp, false);
+  assertEquals(logger.printlevel, true);
+  assertEquals(logger.level, LogLevel.DEBUG);
 });
